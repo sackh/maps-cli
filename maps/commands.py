@@ -1,7 +1,7 @@
 """Main commands module. This module acts as entry point for all the commands."""
 import click
 
-import osm
+from maps.osm import osm
 
 
 @click.group()
@@ -20,13 +20,11 @@ def show_providers(obj):
     Show list of all available maps services providers.
 
     :param obj: main maps click command group object.
-    :return:
     """
     for name, value in obj.commands.items():
         if isinstance(value, click.Group):
-            click.echo(name)
+            click.secho(name, fg="green")
 
 
-if __name__ == "__main__":
-    maps.add_command(osm.osm)
-    maps()
+maps.add_command(osm)
+

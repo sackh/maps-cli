@@ -1,8 +1,12 @@
 [tool.poetry]
-name = "maps"
+name = "maps-cli"
 version = "0.1.0"
 description = "A CLI for maps services."
 authors = ["Sachin Kharude <sachinkharude10@gmail.com>"]
+packages = [
+    { include = "maps" },
+    { include = "maps/**/*.py" },
+]
 
 [tool.poetry.dependencies]
 python = "^3.7"
@@ -11,6 +15,14 @@ geopy = "^2.1.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
+black = "^20.8b1"
+isort = "^5.7.0"
+coverage = "^5.3.1"
+pytest-cov = "^2.10.1"
+pytest-flake8 = "^1.0.7"
+
+[tool.poetry.scripts]
+maps = "maps.commands:maps"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
