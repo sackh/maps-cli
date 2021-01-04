@@ -14,9 +14,9 @@ def test_geocoding_fwd():
     assert result.exit_code == 0
     latlon = json.loads(result.output)
     lat, lon = latlon["lat"], latlon["lon"]
-    lat = round(lat, 2)
+    lat = round(lat, 1)
     lon = round(lon, 2)
-    assert lat == 39.73 and lon == -77.72
+    assert lat == 39.7 and lon == -77.72
 
 
 def test_geocoding_reverse():
