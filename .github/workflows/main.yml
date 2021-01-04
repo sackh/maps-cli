@@ -38,5 +38,7 @@ jobs:
       run: python -m poetry install
 
     - name: Test with pytest
+      env:
+        HERE_APIKEY: ${{ secrets.HERE_APIKEY }}
       run: |
         python -m poetry run python -m pytest -v tests
