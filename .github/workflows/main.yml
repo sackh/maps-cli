@@ -37,6 +37,15 @@ jobs:
       shell: bash
       run: python -m poetry install
 
+    - name: Lint check
+      shell: bash -l {0}
+      run: |
+        poetry run isort --check --diff maps tests
+        poetry run flake8 -v --statistics --count .
+        poetry run black -l 99 --diff --check maps tests
+
     - name: Test with pytest
+      env:
+        HERE_APIKEY: ${{ secrets.HERE_APIKEY }}
       run: |
         python -m poetry run python -m pytest -v tests
