@@ -37,6 +37,12 @@ jobs:
       shell: bash
       run: python -m poetry install
 
+    - name: Lint check
+      shell: bash -l {0}
+      run: |
+        make clean
+        make lint
+
     - name: Test with pytest
       env:
         HERE_APIKEY: ${{ secrets.HERE_APIKEY }}

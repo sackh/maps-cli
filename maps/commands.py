@@ -1,8 +1,8 @@
 """Main commands module. This module acts as entry point for all the commands."""
 import click
 
-from maps.osm import osm
 from maps.here import here
+from maps.osm import osm
 from maps.utils import yield_subcommands
 
 

@@ -9,13 +9,13 @@ from maps.utils import yield_subcommands
 
 
 @click.group()
-@click.option('--apikey', help="Your HERE API key")
+@click.option("--apikey", help="Your HERE API key")
 @click.pass_context
 def here(ctx, apikey):
     """Here provider."""
     ctx.obj = {}
-    apikey = apikey or os.environ.get('HERE_APIKEY')
-    ctx.obj['apikey'] = apikey
+    apikey = apikey or os.environ.get("HERE_APIKEY")
+    ctx.obj["apikey"] = apikey
 
 
 @here.command()
@@ -36,7 +36,7 @@ def show():
 @click.pass_context
 def geocoding(ctx, query, forward, raw):
     """HERE's geocoding service."""
-    geolocator = Here(apikey=ctx.obj['apikey'])
+    geolocator = Here(apikey=ctx.obj["apikey"])
     if forward:
         location = geolocator.geocode(query)
         if raw:
