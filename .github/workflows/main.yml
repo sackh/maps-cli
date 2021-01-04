@@ -40,8 +40,9 @@ jobs:
     - name: Lint check
       shell: bash -l {0}
       run: |
-        make clean
-        make lint
+        poetry run isort --check --diff maps tests
+        poetry run flake8 -v --statistics --count .
+        poetry run black -l 99 --diff --check maps tests
 
     - name: Test with pytest
       env:
