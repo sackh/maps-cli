@@ -1,26 +1,31 @@
-"""This module defines all the OSM commands."""
+"""This module defines all the HERE commands."""
 import json
+import os
 
 import click
-from geopy.geocoders import Nominatim
+from geopy.geocoders import Here
 
-from maps import __version__
 from maps.utils import yield_subcommands
 
 
 @click.group()
-def osm():
-    """Open Street Map provider."""
+@click.option('--apikey', help="Your HERE API key")
+@click.pass_context
+def here(ctx, apikey):
+    """Here provider."""
+    ctx.obj = {}
+    apikey = apikey or os.environ.get('HERE_APIKEY')
+    ctx.obj['apikey'] = apikey
 
 
-@osm.command()
+@here.command()
 def show():
     """show list of all sub commands."""
-    for sub in yield_subcommands(osm):
+    for sub in yield_subcommands(here):
         click.secho(sub, fg="green")
 
 
-@osm.command(short_help="forward or reverse geocode for an address or coordinates.")
+@here.command(short_help="forward or reverse geocode for an address or coordinates.")
 @click.argument("query", required=True)
 @click.option(
     "--forward/--reverse",
@@ -28,9 +33,10 @@ def show():
     help="Perform a forward or reverse geocode. [default: forward]",
 )
 @click.option("--raw", is_flag=True)
-def geocoding(query, forward, raw):
-    """OSM's Nominatim geocoding service."""
-    geolocator = Nominatim(user_agent=f"maps-cli/{__version__}")
+@click.pass_context
+def geocoding(ctx, query, forward, raw):
+    """HERE's geocoding service."""
+    geolocator = Here(apikey=ctx.obj['apikey'])
     if forward:
         location = geolocator.geocode(query)
         if raw:

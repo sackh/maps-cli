@@ -2,6 +2,8 @@
 import click
 
 from maps.osm import osm
+from maps.here import here
+from maps.utils import yield_subcommands
 
 
 @click.group()
@@ -11,20 +13,13 @@ def maps():
 
 @maps.command()
 def show():
-    """show list of all maps services providers."""
-    show_providers(maps)
-
-
-def show_providers(obj):
-    """
-    Show list of all available maps services providers.
-
-    :param obj: main maps click command group object.
-    """
-    for name, value in obj.commands.items():
-        if isinstance(value, click.Group):
-            click.secho(name, fg="green")
+    """show list of all sub commands of maps."""
+    for sub in yield_subcommands(maps):
+        click.secho(sub, fg="green")
 
 
 maps.add_command(osm)
+maps.add_command(here)
 
+# if __name__ == "__main__":
+#     maps()
