@@ -6,6 +6,13 @@ from click.testing import CliRunner
 from maps.commands import maps
 
 
+def test_show():
+    """Test osm show command."""
+    runner = CliRunner()
+    result = runner.invoke(maps, ["osm", "show"], catch_exceptions=False)
+    assert result.output == "geocoding\n"
+
+
 def test_geocoding_fwd():
     runner = CliRunner()
     result = runner.invoke(
