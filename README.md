@@ -4,11 +4,18 @@
 A simple command line tool to access services of various map services providers.
 
 ## Usage
+# ![demo](https://github.com/sackh/maps-cli/raw/master/gifs/demo.gif)
 
 ## Installation
-TBD
+```bash
+    pip install maps-cli
+```
 
-
+## Test Suite
+```bash
+    poetry install
+    python -m poetry run python -m pytest -v --durations=10 --cov=maps tests
+```
 
 ### Commands
 
