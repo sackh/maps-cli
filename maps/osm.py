@@ -25,7 +25,8 @@ def show():
 @click.option(
     "--forward/--reverse",
     default=True,
-    help="Perform a forward or reverse geocode. [default: forward]",
+    show_default=True,
+    help="Perform a forward or reverse geocode",
 )
 @click.option("--raw", is_flag=True)
 def geocoding(query, forward, raw):

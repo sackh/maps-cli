@@ -1,9 +1,9 @@
-"""This module defines all the HERE commands."""
+"""This module defines all the MapBox commands."""
 import json
 import os
 
 import click
-from geopy.geocoders import Here
+from geopy.geocoders import MapBox
 
 from maps.exceptions import ApiKeyNotFoundError
 from maps.utils import yield_subcommands
@@ -11,21 +11,21 @@ from maps.utils import yield_subcommands
 
 @click.group()
 @click.pass_context
-def here(ctx):
-    """Here provider."""
+def mapbox(ctx):
+    """MapBox provider."""
     ctx.obj = {}
 
 
-@here.command()
+@mapbox.command()
 def show():
     """show list of all sub commands."""
-    for sub in yield_subcommands(here):
+    for sub in yield_subcommands(mapbox):
         click.secho(sub, fg="green")
 
 
-@here.command(short_help="forward or reverse geocode for an address or coordinates.")
+@mapbox.command(short_help="forward or reverse geocode for an address or coordinates.")
 @click.argument("query", required=True)
-@click.option("--apikey", help="Your HERE API key", type=str)
+@click.option("--apikey", help="Your MapBox API key", type=str)
 @click.option(
     "--forward/--reverse",
     default=True,
@@ -35,15 +35,15 @@ def show():
 @click.option("--raw", is_flag=True)
 @click.pass_context
 def geocoding(ctx, query, apikey, forward, raw):
-    """HERE's geocoding service."""
-    apikey = apikey or os.environ.get("HERE_APIKEY")
+    """MapBox's geocoding service."""
+    apikey = apikey or os.environ.get("MAPBOX_APIKEY")
     if apikey is None:
         raise ApiKeyNotFoundError(
-            "Please pass HERE API KEY as --apikey or set it as environment "
-            "variable in HERE_APIKEY "
+            "Please pass MAPBOX API KEY as --apikey or set it as environment "
+            "variable in MAPBOX_APIKEY "
         )
     ctx.obj["apikey"] = apikey
-    geolocator = Here(apikey=ctx.obj["apikey"])
+    geolocator = MapBox(api_key=ctx.obj["apikey"])
     if forward:
         location = geolocator.geocode(query)
         if raw:
