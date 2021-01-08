@@ -3,6 +3,10 @@ name = "maps-cli"
 version = "0.0.1"
 description = "A CLI for maps services."
 authors = ["Sachin Kharude <sachinkharude10@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/sackh/maps-cli"
+repository = "https://github.com/sackh/maps-cli"
 packages = [
     { include = "maps" },
     { include = "maps/**/*.py" },
@@ -27,3 +31,6 @@ maps = "maps.commands:maps"
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/sackh/maps-cli/issues"
