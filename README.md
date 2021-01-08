@@ -1,6 +1,7 @@
 # Maps CLI 
 
-[comment]: <> ([![Main Actions Status]&#40;https://github.com/sackh/maps-cli/workflows/main/badge.svg&#41;]&#40;https://github.com/sackh/maps-cli/actions&#41;)
+[![Main Actions Status](https://github.com/sackh/maps-cli/workflows/main/badge.svg)](https://github.com/sackh/maps-cli/actions)
+
 A simple command line tool to access services of various map services providers.
 
 ## Usage
