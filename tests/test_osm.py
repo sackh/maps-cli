@@ -1,4 +1,6 @@
 """Module to test OSM services."""
+import json
+
 from click.testing import CliRunner
 
 from maps.commands import maps
@@ -10,7 +12,11 @@ def test_geocoding_fwd():
         maps, ["osm", "geocoding", "--forward", "1600 pennsylvania ave nw"], catch_exceptions=False
     )
     assert result.exit_code == 0
-    assert result.output == '{\n  "lat": 39.7260958,\n  "lon": -77.7244815\n}\n'
+    latlon = json.loads(result.output)
+    lat, lon = latlon["lat"], latlon["lon"]
+    lat = round(lat, 1)
+    lon = round(lon, 2)
+    assert lat == 39.7 and lon == -77.72
 
 
 def test_geocoding_reverse():
