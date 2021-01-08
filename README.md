@@ -4,7 +4,7 @@
 A simple command line tool to access services of various map services providers.
 
 ## Usage
-# ![demo](https://github.com/sackh/maps-cli/raw/master/gifs/demo.gif)
+# ![demo](https://github.com/sackh/maps-cli/raw/main/gifs/demo.gif)
 
 ## Installation
 ```bash
