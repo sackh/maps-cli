@@ -50,4 +50,11 @@ jobs:
         TOMTOM_APIKEY: ${{ secrets.TOMTOM_APIKEY }}
         MAPBOX_APIKEY: ${{ secrets.MAPBOX_APIKEY }}
       run: |
-        python -m poetry run python -m pytest -v --durations=10 --cov=maps tests
+        python -m poetry run python -m pytest -v --durations=10 --cov=maps tests --cov-report=xml
+    - name: Upload coverage to Codecov
+      if: github.ref == 'refs/heads/master' && matrix.python-version == '3.8'
+      uses: codecov/codecov-action@v1
+      with:
+        file: ./coverage.xml
+        flags: unittests
+        verbose: true
