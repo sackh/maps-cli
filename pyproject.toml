@@ -13,9 +13,12 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = ">=3.7.1,<4.0"
 click = "^7.1.2"
 geopy = "^2.1.0"
+overpy = "^0.4"
+tabulate = "^0.8.7"
+pandas = "^1.2.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
