@@ -35,7 +35,17 @@ def show():
 @click.option("--raw", is_flag=True)
 @click.pass_context
 def geocoding(ctx, query, apikey, forward, raw):
-    """HERE's geocoding service."""
+    """
+    HERE's geocoding service.
+    \f
+
+    :param ctx: A context dictionary.
+    :param query: A string to represent address query for geocoding.
+    :param apikey: An API key for authentication.
+    :param forward: A boolean flag for forward/reverse geocoding.
+    :param raw: A boolean flag to show api response as it is.
+    :return: None.
+    """
     apikey = apikey or os.environ.get("HERE_APIKEY")
     if apikey is None:
         raise ApiKeyNotFoundError(
