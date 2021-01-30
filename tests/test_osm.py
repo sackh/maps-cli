@@ -10,7 +10,7 @@ def test_show():
     """Test osm show command."""
     runner = CliRunner()
     result = runner.invoke(maps, ["osm", "show"], catch_exceptions=False)
-    assert result.output == "geocoding\n"
+    assert result.output == "geocoding\noverpass\n"
 
 
 def test_geocoding_fwd():
