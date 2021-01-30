@@ -12,7 +12,13 @@ from maps.utils import yield_subcommands
 @click.group()
 @click.pass_context
 def tomtom(ctx):
-    """TomTom provider."""
+    """
+    TomTom provider.
+    \f
+
+    :param ctx: A context dictionary.
+    :return: None
+    """
     ctx.obj = {}
 
 
@@ -35,7 +41,17 @@ def show():
 @click.option("--raw", is_flag=True)
 @click.pass_context
 def geocoding(ctx, query, apikey, forward, raw):
-    """TomTom's geocoding service."""
+    """
+    TomTom's geocoding service.
+    \f
+
+    :param ctx: A context dictionary.
+    :param query: A string to represent address query for geocoding.
+    :param apikey: An API key for authentication.
+    :param forward: A boolean flag for forward/reverse geocoding.
+    :param raw: A boolean flag to show api response as it is.
+    :return: None.
+    """
     apikey = apikey or os.environ.get("TOMTOM_APIKEY")
     if apikey is None:
         raise ApiKeyNotFoundError(

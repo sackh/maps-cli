@@ -31,7 +31,15 @@ def show():
 )
 @click.option("--raw", is_flag=True)
 def geocoding(query, forward, raw):
-    """OSM's Nominatim geocoding service."""
+    """
+    OSM's Nominatim geocoding service.
+    \f
+
+    :param query: A string to represent address query for geocoding.
+    :param forward: A boolean flag for forward/reverse geocoding.
+    :param raw: A boolean flag to show api response as it is.
+    :return: None.
+    """
     geolocator = Nominatim(user_agent=f"maps-cli/{__version__}")
     if forward:
         location = geolocator.geocode(query)
@@ -51,7 +59,14 @@ def geocoding(query, forward, raw):
 @osm.command(short_help="OSM's Overpass API")
 @click.argument("query", required=True)
 def overpass(query):
-    """OSM's Overpass API service."""
+    """
+    OSM's Overpass API service.
+    \f
+
+    :param query: An input OSM overpass query. more info canbe found
+        `here <http://www.overpass-api.de/>_`.
+    :return: None.
+    """
     api = overpy.Overpass()
     result = api.query(query)
     if result.nodes:
