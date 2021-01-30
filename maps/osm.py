@@ -1,11 +1,9 @@
 """This module defines all the OSM commands."""
-import json
 
 import click
 import overpy
-import pandas as pd
+import simplejson as json
 from geopy.geocoders import Nominatim
-from tabulate import tabulate
 
 from maps import __version__
 from maps.utils import yield_subcommands
@@ -56,29 +54,20 @@ def overpass(query):
     """OSM's Overpass API service."""
     api = overpy.Overpass()
     result = api.query(query)
-    node_tags = []
-    for node in result.nodes:
-        node.tags["latitude"] = node.lat
-        node.tags["longitude"] = node.lon
-        node.tags["id"] = node.id
-        node_tags.append(node.tags)
-    nodes_df = pd.DataFrame(node_tags)
-    if not nodes_df.empty:
+    if result.nodes:
         click.secho("Nodes:", fg="green")
-        click.secho((tabulate(nodes_df, headers="keys", tablefmt="psql")), fg="green")
-    ways = []
-    for way in result.ways:
-        way.tags["id"] = way.id
-        ways.append(way.tags)
-    ways_df = pd.DataFrame(ways)
-    if not ways_df.empty:
+        for node in result.nodes:
+            node.tags["latitude"] = node.lat
+            node.tags["longitude"] = node.lon
+            node.tags["id"] = node.id
+            click.secho(json.dumps(node.tags, indent=2, ensure_ascii=False), fg="green")
+    if result.ways:
         click.secho("Ways:", fg="green")
-        click.secho((tabulate(ways_df, headers="keys", tablefmt="psql")), fg="green")
-    relations = []
-    for relation in result.relations:
-        relation.tags["id"] = relation.id
-        relations.append(relation.tags)
-    relations_df = pd.DataFrame(relations)
-    if not relations_df.empty:
+        for way in result.ways:
+            way.tags["id"] = way.id
+            click.secho(json.dumps(way.tags, indent=2, ensure_ascii=False), fg="green")
+    if result.relations:
         click.secho("Relations:", fg="green")
-        click.secho((tabulate(relations_df, headers="keys", tablefmt="psql")), fg="green")
+        for relation in result.relations:
+            relation.tags["id"] = relation.id
+            click.secho(json.dumps(relation.tags, indent=2, ensure_ascii=False), fg="green")

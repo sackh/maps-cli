@@ -33,3 +33,12 @@ def test_geocoding_reverse():
     )
     assert result.exit_code == 0
     assert "I B Patel Road" in result.output
+
+
+def test_overpass():
+    runner = CliRunner()
+    result = runner.invoke(
+        maps, ["osm", "overpass", "node(50.745,7.17,50.75,7.18);out;"], catch_exceptions=False
+    )
+    assert result.exit_code == 0
+    assert '"id": 4597400934' in result.output
