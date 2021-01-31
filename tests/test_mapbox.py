@@ -8,7 +8,7 @@ def test_show():
     """Test mapbox show command."""
     runner = CliRunner()
     result = runner.invoke(maps, ["mapbox", "show"], catch_exceptions=False)
-    assert result.output == "geocoding\n"
+    assert result.output == "geocoding\nisochrone\n"
 
 
 def test_geocoding_fwd():
@@ -27,3 +27,21 @@ def test_geocoding_reverse():
     )
     assert result.exit_code == 0
     assert "Haptik, 8th Floor" in result.output
+
+
+def test_isochrone():
+    runner = CliRunner()
+    result = runner.invoke(
+        maps,
+        [
+            "mapbox",
+            "isochrone",
+            "--profile=driving",
+            "--coordinates=-118.22258,33.99038",
+            "--contours_minutes=5",
+            "--polygons",
+        ],
+        catch_exceptions=False,
+    )
+    assert result.exit_code == 0
+    assert "FeatureCollection" in result.output
