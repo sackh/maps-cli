@@ -21,7 +21,6 @@ class MapBoxApi(Api):
         contours_colors: Optional[List] = None,
         polygons: bool = False,
         denoise: Optional[float] = 1.0,
-        generalize: Optional[float] = None,
     ) -> requests.models.Response:
         """
         Mapbox isochrone api to get reachable area on map.
@@ -44,11 +43,6 @@ class MapBoxApi(Api):
             The default is 1.0. A value of 1.0 will only return the largest contour for a given
             time value. A value of 0.5 drops any contours that are less than half the area of the
             largest contour in the set of contours for that same time value.
-        :param generalize: A positive floating point value in meters used as the tolerance for
-            Douglas-Peucker generalization. There is no upper bound. If no value is specified in
-            the request, the Isochrone API will choose the most optimized generalization to use for
-            the request. Note that the generalization of contours can lead to self-intersections,
-            as well as intersections of adjacent contours.
         :return: The HTTP response returned by the :mod:`requests` package.
         """
         latlng = ",".join([str(coord) for coord in coordinates])
@@ -61,7 +55,5 @@ class MapBoxApi(Api):
         }
         if contours_colors:
             params["contours_colors"] = ",".join([cc for cc in contours_colors])
-        if generalize:
-            params["generalize"] = str(generalize)
 
         return self.get(path=path, params=params)

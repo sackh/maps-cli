@@ -39,6 +39,7 @@ def test_isochrone():
             "--profile=driving",
             "--coordinates=-118.22258,33.99038",
             "--contours_minutes=5",
+            "--contours_colors=6706ce",
             "--polygons",
         ],
         catch_exceptions=False,
