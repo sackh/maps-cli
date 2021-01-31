@@ -1,6 +1,7 @@
 # Maps CLI 
 
 [![Main Actions Status](https://github.com/sackh/maps-cli/workflows/main/badge.svg)](https://github.com/sackh/maps-cli/actions)
+[![Documentation Status](https://readthedocs.org/projects/maps-cli/badge/?version=latest)](https://maps-cli.readthedocs.io/en/latest/?badge=latest)
 [![codecov](https://codecov.io/gh/sackh/maps-cli/branch/master/graph/badge.svg?token=98J9ILF6VG)](https://codecov.io/gh/sackh/maps-cli)
 [![PyPI - Python Version](https://img.shields.io/pypi/v/maps-cli.svg?logo=pypi)](https://pypi.org/project/maps-cli/)
 [![Downloads](https://pepy.tech/badge/maps-cli)](https://pepy.tech/project/maps-cli)
