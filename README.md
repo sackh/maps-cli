@@ -18,20 +18,20 @@ A simple command line tool to access services of various map services providers.
 
 ## Installation
 ```bash
-    pip install maps-cli
+  pip install maps-cli
 ```
 
 ## Test Suite
 ```bash
-    poetry install
-    python -m poetry run python -m pytest -v --durations=10 --cov=maps tests
+  poetry install
+  pytest -v --durations=10 --cov=maps tests
 ```
 
 ### Commands
 
 ```bash
-    maps -h
-    maps show
+  maps -h
+  maps show
 ```
 
 ## Maps Service Providers
