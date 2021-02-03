@@ -9,7 +9,6 @@
 [![GitHub contributors](https://img.shields.io/github/contributors/sackh/maps-cli)](https://github.com/sackh/maps-cli/graphs/contributors)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![commits since](https://img.shields.io/github/commits-since/sackh/maps-cli/latest.svg)](https://github.com/sackh/maps-cli/commits/master)
-[![HitCount](http://hits.dwyl.com/sackh/maps-cli.svg)](http://hits.dwyl.com/sackh/maps-cli)
 
 A simple command line tool to access services of various map services providers.
 
