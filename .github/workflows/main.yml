@@ -33,9 +33,6 @@ jobs:
     - name: View poetry --help
       run: |
         poetry --help
-        npm --version
-        npm config list
-        npm list
 
     - name: Install dependencies
       shell: bash
