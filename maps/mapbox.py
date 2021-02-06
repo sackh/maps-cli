@@ -109,15 +109,26 @@ def isochrone(ctx, profile, coordinates, contours_minutes, contours_colors, poly
     \f
 
     :param ctx: A context dictionary.
-    :param profile:
-    :param coordinates:
-    :param contours_minutes:
-    :param contours_colors:
-    :param polygons:
-    :param apikey:
-    :return:
+    :param profile: A Mapbox Directions routing profile ID. Options are mapbox/driving for travel
+        times by car, mapbox/walking for pedestrian and hiking travel times, and mapbox/cycling for
+        travel times by bicycle. For more detailed descriptions of these routing profiles, see the
+        Directions API documentation.
+    :param coordinates: A {longitude,latitude} coordinate pair around which to center the isochrone
+        lines.
+    :param contours_minutes: The times in minutes to use for each isochrone contour. You can
+        specify up to four contours. Times must be in increasing order. The maximum time that can
+        be specified is 60 minutes.
+    :param contours_colors: The colors to use for each isochrone contour, specified as hex values
+        without a leading # (for example, ff0000 for red). If this parameter is used, there must
+        be the same number of colors as there are entries in contours_minutes.
+        If no colors are specified, the Isochrone API will assign a default rainbow color scheme
+        to the output.
+    :param polygons: Specify whether to return the contours as GeoJSON polygons (true) or
+        linestrings (false, default). When polygons=true, any contour that forms a ring is
+        returned as a polygon.
+    :param apikey: An API key for authentication.
+    :return: None.
     """
-    print("IN")
     apikey = apikey or os.environ.get("MAPBOX_APIKEY")
     if apikey is None:
         raise ApiKeyNotFoundError(
@@ -132,5 +143,86 @@ def isochrone(ctx, profile, coordinates, contours_minutes, contours_colors, poly
         contours_minutes=contours_minutes.split(","),
         contours_colors=contours_colors.split(",") if contours_colors else contours_colors,
         polygons=polygons,
+    )
+    click.secho(json.dumps(resp.json(), indent=2), fg="green")
+
+
+@mapbox.command(short_help="The Mapbox Matrix API returns travel times between many points.")
+@click.option(
+    "--profile",
+    type=click.Choice(["driving", "walking", "cycling", "driving-traffic"]),
+    help="A Mapbox Directions routing profile ID.",
+    required=True,
+)
+@click.option(
+    "--coordinates",
+    required=True,
+    help="A semicolon separated {longitude,latitude} coordinate pairs.",
+    type=str,
+)
+@click.option(
+    "--annotations",
+    help="Used to specify the resulting matrices. Possible values are: duration (default), "
+    "distance, or both values separated by a comma.",
+    default="duration",
+)
+@click.option(
+    "--approaches",
+    help="A semicolon-separated list indicating the side of the road from which to approach "
+    "waypoints in a requested route. Accepts unrestricted (default, route can arrive at the "
+    "waypoint from either side of the road) or curb (route will arrive at the waypoint on "
+    "the driving_side of the region). If provided, the number of approaches must be the same "
+    "as the number of waypoints. However, you can skip a coordinate and show its position in "
+    "the list with the ; separator waypoints in a requested route",
+)
+@click.option(
+    "--destinations",
+    help="Use the coordinates at a given index as destinations. Possible values are: a "
+    "semicolon-separated list of 0-based indices, or all (default). "
+    "The option all allows using all coordinates as destinations.",
+    type=str,
+)
+@click.option("--apikey", help="Your MapBox API key", type=str)
+@click.pass_context
+def matrix(ctx, profile, coordinates, annotations, approaches, destinations, apikey):
+    """
+    The Mapbox Matrix API returns travel times between many points.
+    for more information `see <https://docs.mapbox.com/api/navigation/matrix/>_`.
+    \f
+
+    :param ctx: A context dictionary.
+    :param profile: A Mapbox Directions routing profile ID.
+        `see <https://docs.mapbox.com/api/navigation/matrix/>_`.
+    :param coordinates: A semicolon-separated list of {longitude},{latitude} coordinates.
+        There must be between two and 25 coordinates. For the mapbox/driving-traffic profile,
+        the maximum is 10 coordinates.
+    :param annotations: Used to specify the resulting matrices. Possible values are: duration
+        (default), distance, or both values separated by a comma.
+    :param approaches: A semicolon-separated list indicating the side of the road from which to
+        approach waypoints in a requested route. Accepts unrestricted (default, route can arrive
+        at the waypoint from either side of the road) or curb (route will arrive at the waypoint
+        on the driving_side of the region). If provided, the number of approaches must be the same
+        as the number of waypoints. However, you can skip a coordinate and show its position in the
+        list with the ; separator.
+    :param destinations: Use the coordinates at a given index as destinations. Possible values are:
+        a semicolon-separated list of 0-based indices, or all (default). The option all allows
+        using all coordinates as destinations.
+    :param apikey: An API key for authentication.
+    :return: None.
+    """
+    apikey = apikey or os.environ.get("MAPBOX_APIKEY")
+    if apikey is None:
+        raise ApiKeyNotFoundError(
+            "Please pass MAPBOX API KEY as --apikey or set it as environment "
+            "variable in MAPBOX_APIKEY "
+        )
+    ctx.obj["apikey"] = apikey
+    client = MapBoxApi(base_url="https://api.mapbox.com", credentials=apikey)
+    resp = client.matrix(
+        profile=profile,
+        coordinates=coordinates,
+        annotations=annotations if annotations else None,
+        approaches=approaches if approaches else None,
+        destinations=destinations if destinations else None,
     )
     click.secho(json.dumps(resp.json(), indent=2), fg="green")

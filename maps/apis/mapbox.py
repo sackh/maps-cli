@@ -57,3 +57,43 @@ class MapBoxApi(Api):
             params["contours_colors"] = ",".join([cc for cc in contours_colors])
 
         return self.get(path=path, params=params)
+
+    def matrix(
+        self,
+        profile: str,
+        coordinates: str,
+        annotations: Optional[str] = None,
+        approaches: Optional[str] = None,
+        destinations: Optional[str] = None,
+    ) -> requests.models.Response:
+        """
+        The Mapbox Matrix API returns travel times between many points.
+
+        :param profile: A Mapbox Directions routing profile ID.
+            `see <https://docs.mapbox.com/api/navigation/matrix/>_`.
+        :param coordinates: A semicolon-separated list of {longitude},{latitude} coordinates.
+            There must be between two and 25 coordinates. For the mapbox/driving-traffic profile,
+            the maximum is 10 coordinates.
+        :param annotations: Used to specify the resulting matrices. Possible values are: duration
+            (default), distance, or both values separated by a comma.
+        :param approaches: A semicolon-separated list indicating the side of the road from which to
+            approach waypoints in a requested route. Accepts unrestricted (default, route can
+            arrive at the waypoint from either side of the road) or curb (route will arrive at
+            the waypoint on the driving_side of the region). If provided, the number of approaches
+            must be the same as the number of waypoints. However, you can skip a coordinate and
+            show its position in the list with the ; separator.
+        :param destinations: Use the coordinates at a given index as destinations. Possible values
+            are: a semicolon-separated list of 0-based indices, or all (default).
+            The option all allows using all coordinates as destinations.
+        :return: The HTTP response returned by the :mod:`requests` package.
+        """
+        path = f"/directions-matrix/v1/mapbox/{profile}/{coordinates}"
+        params = {"access_token": self.credentials}
+        if annotations:
+            params["destinations"] = destinations
+        if approaches:
+            params["approaches"] = approaches
+        if destinations:
+            params["destinations"] = destinations
+
+        return self.get(path=path, params=params)

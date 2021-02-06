@@ -8,7 +8,7 @@ def test_show():
     """Test mapbox show command."""
     runner = CliRunner()
     result = runner.invoke(maps, ["mapbox", "show"], catch_exceptions=False)
-    assert result.output == "geocoding\nisochrone\n"
+    assert result.output == "geocoding\nisochrone\nmatrix\n"
 
 
 def test_geocoding_fwd():
@@ -46,3 +46,22 @@ def test_isochrone():
     )
     assert result.exit_code == 0
     assert "FeatureCollection" in result.output
+
+
+def test_matrix():
+    runner = CliRunner()
+    result = runner.invoke(
+        maps,
+        [
+            "mapbox",
+            "matrix",
+            "--profile=driving",
+            "--coordinates=-122.42,37.78;-122.45,37.91;-122.48,37.73",
+            "--annotations=distance,duration",
+            "--approaches=curb;curb;curb",
+            "--destinations=all",
+        ],
+        catch_exceptions=False,
+    )
+    assert result.exit_code == 0
+    assert '"code": "Ok"' in result.output
