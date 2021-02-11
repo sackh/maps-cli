@@ -31,6 +31,10 @@ A simple command line tool to access services of various map services providers.
 ```bash
   maps -h
   maps show
+  maps osm -h
+  maps here -h
+  maps mapbox -h
+  maps tomtom -h
 ```
 
 ## Maps Service Providers
@@ -41,6 +45,3 @@ Currently, this library is supporting following providers.
 - [MapBox](https://www.mapbox.com/)
 - [TomTom](https://www.tomtom.com/)
 
-
-## Services
-Currently, all providers support forward and reverse geocoding services.
