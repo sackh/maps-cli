@@ -3,11 +3,12 @@ import json
 import os
 
 import click
+from geojsonio import display as geo_display
 from geopy.geocoders import MapBox
 
 from maps.apis.mapbox import MapBoxApi
 from maps.exceptions import ApiKeyNotFoundError
-from maps.utils import yield_subcommands
+from maps.utils import get_feature_from_lat_lon, yield_subcommands
 
 
 @click.group()
@@ -33,9 +34,10 @@ def show():
     show_default=True,
     help="Perform a forward or reverse geocode",
 )
-@click.option("--raw", is_flag=True)
+@click.option("--raw", help="Show response body as it is from API", is_flag=True)
+@click.option("--display", help="Display result in browser", is_flag=True)
 @click.pass_context
-def geocoding(ctx, query, apikey, forward, raw):
+def geocoding(ctx, query, apikey, forward, raw, display):
     """
     MapBox's geocoding service.
     \f
@@ -45,6 +47,7 @@ def geocoding(ctx, query, apikey, forward, raw):
     :param apikey: An API key for authentication.
     :param forward: A boolean flag for forward/reverse geocoding.
     :param raw: A boolean flag to show api response as it is.
+    :param display: A boolean flag to show result in web browser.
     :return: None.
     """
     apikey = apikey or os.environ.get("MAPBOX_APIKEY")
@@ -59,6 +62,9 @@ def geocoding(ctx, query, apikey, forward, raw):
         location = geolocator.geocode(query)
         if raw:
             click.secho(json.dumps(location.raw, indent=2), fg="green")
+        elif display:
+            feature = get_feature_from_lat_lon(location.latitude, location.longitude)
+            geo_display(feature)
         else:
             result = {"lat": location.latitude, "lon": location.longitude}
             click.secho(json.dumps(result, indent=2), fg="green")
@@ -97,8 +103,11 @@ def geocoding(ctx, query, apikey, forward, raw):
     "(False).",
 )
 @click.option("--apikey", help="Your MapBox API key", type=str)
+@click.option("--display", help="Display result in browser", is_flag=True)
 @click.pass_context
-def isochrone(ctx, profile, coordinates, contours_minutes, contours_colors, polygons, apikey):
+def isochrone(
+    ctx, profile, coordinates, contours_minutes, contours_colors, polygons, apikey, display
+):
     """
     An isochrone, from the Greek root words iso (equal) and chrone (time), is a line that connects
     points of equal travel time around a given location.
@@ -127,6 +136,7 @@ def isochrone(ctx, profile, coordinates, contours_minutes, contours_colors, poly
         linestrings (false, default). When polygons=true, any contour that forms a ring is
         returned as a polygon.
     :param apikey: An API key for authentication.
+    :param display: A boolean flag to show result in web browser.
     :return: None.
     """
     apikey = apikey or os.environ.get("MAPBOX_APIKEY")
@@ -144,7 +154,14 @@ def isochrone(ctx, profile, coordinates, contours_minutes, contours_colors, poly
         contours_colors=contours_colors.split(",") if contours_colors else contours_colors,
         polygons=polygons,
     )
-    click.secho(json.dumps(resp.json(), indent=2), fg="green")
+    if display:
+        lon, lat = [float(c) for c in coordinates.split(",")]
+        center = get_feature_from_lat_lon(lat, lon)
+        feature_collection = resp.json()
+        feature_collection["features"].append(center)
+        geo_display(json.dumps(feature_collection, indent=2))
+    else:
+        click.secho(json.dumps(resp.json(), indent=2), fg="green")
 
 
 @mapbox.command(short_help="The Mapbox Matrix API returns travel times between many points.")

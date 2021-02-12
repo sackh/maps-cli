@@ -3,10 +3,11 @@ import json
 import os
 
 import click
+from geojsonio import display as geo_display
 from geopy.geocoders import Here
 
 from maps.exceptions import ApiKeyNotFoundError
-from maps.utils import yield_subcommands
+from maps.utils import get_feature_from_lat_lon, yield_subcommands
 
 
 @click.group()
@@ -33,8 +34,9 @@ def show():
     help="Perform a forward or reverse geocode",
 )
 @click.option("--raw", is_flag=True)
+@click.option("--display", help="Display result in browser", is_flag=True)
 @click.pass_context
-def geocoding(ctx, query, apikey, forward, raw):
+def geocoding(ctx, query, apikey, forward, raw, display):
     """
     HERE's geocoding service.
     \f
@@ -44,6 +46,7 @@ def geocoding(ctx, query, apikey, forward, raw):
     :param apikey: An API key for authentication.
     :param forward: A boolean flag for forward/reverse geocoding.
     :param raw: A boolean flag to show api response as it is.
+    :param display: A boolean flag to show result in web browser.
     :return: None.
     """
     apikey = apikey or os.environ.get("HERE_APIKEY")
@@ -58,6 +61,9 @@ def geocoding(ctx, query, apikey, forward, raw):
         location = geolocator.geocode(query)
         if raw:
             click.secho(json.dumps(location.raw, indent=2), fg="green")
+        elif display:
+            feature = get_feature_from_lat_lon(location.latitude, location.longitude)
+            geo_display(feature)
         else:
             result = {"lat": location.latitude, "lon": location.longitude}
             click.secho(json.dumps(result, indent=2), fg="green")

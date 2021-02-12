@@ -25,6 +25,14 @@ def test_geocoding_fwd():
     lon = round(lon, 2)
     assert lat == 39.7 and lon == -77.72
 
+    raw_result = runner.invoke(
+        maps,
+        ["osm", "geocoding", "--forward", "1600 pennsylvania ave nw", "--raw"],
+        catch_exceptions=False,
+    )
+    assert raw_result.exit_code == 0
+    assert "place_id" in raw_result.output
+
 
 def test_geocoding_reverse():
     runner = CliRunner()

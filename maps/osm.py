@@ -3,10 +3,11 @@
 import click
 import overpy
 import simplejson as json
+from geojsonio import display as geo_display
 from geopy.geocoders import Nominatim
 
 from maps import __version__
-from maps.utils import yield_subcommands
+from maps.utils import get_feature_from_lat_lon, yield_subcommands
 
 
 @click.group()
@@ -30,7 +31,8 @@ def show():
     help="Perform a forward or reverse geocode",
 )
 @click.option("--raw", is_flag=True)
-def geocoding(query, forward, raw):
+@click.option("--display", help="Display result in browser", is_flag=True)
+def geocoding(query, forward, raw, display):
     """
     OSM's Nominatim geocoding service.
     \f
@@ -45,6 +47,9 @@ def geocoding(query, forward, raw):
         location = geolocator.geocode(query)
         if raw:
             click.secho(json.dumps(location.raw, indent=2), fg="green")
+        elif display:
+            feature = get_feature_from_lat_lon(location.latitude, location.longitude)
+            geo_display(feature)
         else:
             result = {"lat": location.latitude, "lon": location.longitude}
             click.secho(json.dumps(result, indent=2), fg="green")
