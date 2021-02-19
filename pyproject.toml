@@ -33,6 +33,7 @@ simplejson = "^3.17.2"
 requests = "^2.25.1"
 geojsonio = "^0.0.3"
 geojson = "^2.5.0"
+here-location-services = "^0.1.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
