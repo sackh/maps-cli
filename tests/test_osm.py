@@ -41,6 +41,12 @@ def test_geocoding_reverse():
     )
     assert result.exit_code == 0
     assert "I B Patel Road" in result.output
+    raw_result = runner.invoke(
+        maps,
+        ["osm", "geocoding", "--reverse", "19.16153,72.85618", "--raw"],
+        catch_exceptions=False,
+    )
+    assert raw_result.exit_code == 0
 
 
 def test_overpass_node():

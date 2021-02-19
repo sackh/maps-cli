@@ -18,6 +18,10 @@ def test_geocoding_fwd():
     )
     assert result.exit_code == 0
     assert result.output == '{\n  "lat": 37.2153,\n  "lon": -93.2983\n}\n'
+    raw_result = runner.invoke(
+        maps, ["mapbox", "geocoding", "--forward", "springfield", "--raw"], catch_exceptions=False
+    )
+    assert raw_result.exit_code == 0
 
 
 def test_geocoding_reverse():
@@ -27,6 +31,12 @@ def test_geocoding_reverse():
     )
     assert result.exit_code == 0
     assert "Haptik, 8th Floor" in result.output
+    raw_result = runner.invoke(
+        maps,
+        ["mapbox", "geocoding", "--reverse", "19.16153,72.85618", "--raw"],
+        catch_exceptions=False,
+    )
+    assert raw_result.exit_code == 0
 
 
 def test_isochrone():
