@@ -1,8 +1,8 @@
 """This module defines all the MapBox commands."""
-import json
 import os
 
 import click
+import simplejson as json
 from geojsonio import display as geo_display
 from geopy.geocoders import MapBox
 

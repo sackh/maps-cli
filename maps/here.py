@@ -1,8 +1,8 @@
 """This module defines all the HERE commands."""
-import json
 import os
 
 import click
+import simplejson as json
 from geojsonio import display as geo_display
 from geopy.geocoders import Here
 from here_location_services import LS

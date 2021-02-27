@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "maps-cli"
-version = "0.0.2"
+version = "0.0.3"
 description = "A CLI for maps services."
 authors = ["Sachin Kharude <sachinkharude10@gmail.com>"]
 license = "MIT"
