@@ -1,5 +1,6 @@
 """Module to test HERE services."""
 import json
+import os
 
 from click.testing import CliRunner
 
@@ -42,6 +43,19 @@ def test_geocoding_reverse():
     assert raw_result.exit_code == 0
 
 
+def test_geocoding_exception():
+    api_key = os.environ["HERE_APIKEY"]
+    try:
+        del os.environ["HERE_APIKEY"]
+        runner = CliRunner()
+        result = runner.invoke(
+            maps, ["here", "geocoding", "--forward", "springfield"], catch_exceptions=False
+        )
+    finally:
+        os.environ["HERE_APIKEY"] = api_key
+    assert result.exit_code == 2
+
+
 def test_discover():
     runner = CliRunner()
     result = runner.invoke(
@@ -78,3 +92,23 @@ def test_discover():
     )
     assert result3.exit_code == 0
     assert "Starbucks, Am Ostbahnhof, 10243 Berlin, Germany" in result3.output
+
+
+def test_discover_exception():
+    api_key = os.environ["HERE_APIKEY"]
+    try:
+        del os.environ["HERE_APIKEY"]
+        runner = CliRunner()
+        result = runner.invoke(
+            maps,
+            [
+                "here",
+                "discover",
+                "starbucks",
+                "--coordinates=72.8526,19.1663",
+                "--country_codes=IND",
+            ],
+        )
+    finally:
+        os.environ["HERE_APIKEY"] = api_key
+    assert result.exit_code == 2

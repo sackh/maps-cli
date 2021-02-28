@@ -1,4 +1,6 @@
 """Module to test MapBox services."""
+import os
+
 from click.testing import CliRunner
 
 from maps.commands import maps
@@ -39,6 +41,19 @@ def test_geocoding_reverse():
     assert raw_result.exit_code == 0
 
 
+def test_geocoding_exception():
+    api_key = os.environ["MAPBOX_APIKEY"]
+    try:
+        del os.environ["MAPBOX_APIKEY"]
+        runner = CliRunner()
+        result = runner.invoke(
+            maps, ["mapbox", "geocoding", "--forward", "springfield"], catch_exceptions=False
+        )
+    finally:
+        os.environ["MAPBOX_APIKEY"] = api_key
+    assert result.exit_code == 2
+
+
 def test_isochrone():
     runner = CliRunner()
     result = runner.invoke(
@@ -58,6 +73,29 @@ def test_isochrone():
     assert "FeatureCollection" in result.output
 
 
+def test_isochrone_exception():
+    api_key = os.environ["MAPBOX_APIKEY"]
+    try:
+        del os.environ["MAPBOX_APIKEY"]
+        runner = CliRunner()
+        result = runner.invoke(
+            maps,
+            [
+                "mapbox",
+                "isochrone",
+                "--profile=driving",
+                "--coordinates=-118.22258,33.99038",
+                "--contours_minutes=5",
+                "--contours_colors=6706ce",
+                "--polygons",
+            ],
+            catch_exceptions=False,
+        )
+    finally:
+        os.environ["MAPBOX_APIKEY"] = api_key
+    assert result.exit_code == 2
+
+
 def test_matrix():
     runner = CliRunner()
     result = runner.invoke(
@@ -75,3 +113,26 @@ def test_matrix():
     )
     assert result.exit_code == 0
     assert '"code": "Ok"' in result.output
+
+
+def test_matrix_exception():
+    api_key = os.environ["MAPBOX_APIKEY"]
+    try:
+        del os.environ["MAPBOX_APIKEY"]
+        runner = CliRunner()
+        result = runner.invoke(
+            maps,
+            [
+                "mapbox",
+                "matrix",
+                "--profile=driving",
+                "--coordinates=-122.42,37.78;-122.45,37.91;-122.48,37.73",
+                "--annotations=distance,duration",
+                "--approaches=curb;curb;curb",
+                "--destinations=all",
+            ],
+            catch_exceptions=False,
+        )
+    finally:
+        os.environ["MAPBOX_APIKEY"] = api_key
+    assert result.exit_code == 2

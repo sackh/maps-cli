@@ -1,13 +1,11 @@
-.PHONY: all build install typing lint test
+.PHONY: all install lint test
 
-all: black build install typing lint test
+all: black install lint test
 
 black:
 	black -l 99 maps tests
 	isort --atomic .
 
-#build:
-#	python3 -m pip install -r requirements.txt
 
 clean: clean-build clean-pyc clean-test ## remove all build, test, coverage and Python artifacts
 
@@ -36,8 +34,6 @@ clean-test: ## remove test and coverage artifacts
 install:
 	python3 -m pip install -e .
 
-#typing:
-#	pytest -v -s --mypy maps
 
 lint:
 	isort --check --diff maps tests
