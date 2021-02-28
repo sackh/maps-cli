@@ -5,17 +5,20 @@
 
 maps-cli documentation
 ======================
+A simple command line tool to access services of various map services providers.
+
+.. image:: https://github.com/sackh/maps-cli/raw/master/images/demo.gif
 
 .. toctree::
-   :maxdepth: 4
-   :caption: Contents:
+  :maxdepth: 1
+  :caption: Getting Started
 
-   maps
+  Prerequisites <prerequisites>
+  Installation <installation>
 
+.. toctree::
+  :maxdepth: 1
+  :caption: Reference Guide
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+  API Reference <maps>
+  Changelog <changelog>
