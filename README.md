@@ -16,25 +16,31 @@ A simple command line tool to access services of various map services providers.
 # ![demo](https://github.com/sackh/maps-cli/raw/master/images/demo.gif)
 
 ## Installation
+Using conda:
 ```bash
-  pip install maps-cli
+$ conda install -c conda-forge maps-cli
+```
+Using pip: 
+
+```bash
+$ pip install maps-cli
 ```
 
 ## Test Suite
 ```bash
-  poetry install
-  pytest -v --durations=10 --cov=maps tests
+$ poetry install
+$ pytest -v --durations=10 --cov=maps tests
 ```
 
 ### Commands
 
 ```bash
-  maps -h
-  maps show
-  maps osm -h
-  maps here -h
-  maps mapbox -h
-  maps tomtom -h
+$ maps -h
+$ maps show
+$ maps osm -h
+$ maps here -h
+$ maps mapbox -h
+$ maps tomtom -h
 ```
 
 ## Maps Service Providers
