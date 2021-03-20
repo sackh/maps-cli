@@ -2,6 +2,7 @@
 import json
 
 from click.testing import CliRunner
+from pytest import approx
 
 from maps.commands import maps
 
@@ -23,7 +24,7 @@ def test_geocoding_fwd():
     lat, lon = latlon["lat"], latlon["lon"]
     lat = round(lat, 1)
     lon = round(lon, 2)
-    assert lat == 39.7 and lon == -77.72
+    assert lat == approx(39.7, 0.1) and lon == approx(-77.72, 0.1)
 
     raw_result = runner.invoke(
         maps,
