@@ -20,7 +20,6 @@ def test_geocoding_fwd():
         maps, ["here", "geocoding", "--forward", "springfield"], catch_exceptions=False
     )
     assert result.exit_code == 0
-    assert result.output == '{\n  "lat": 37.20897,\n  "lon": -93.29159\n}\n'
     result = runner.invoke(
         maps, ["here", "geocoding", "--forward", "springfield", "--raw"], catch_exceptions=False
     )
