@@ -11,7 +11,7 @@ def test_show():
     """Test here show command."""
     runner = CliRunner()
     result = runner.invoke(maps, ["here", "show"], catch_exceptions=False)
-    assert result.output.split() == ["geocoding", "discover"]
+    assert result.output.split() == ["geocoding", "discover", "route"]
 
 
 def test_geocoding_fwd():
@@ -112,3 +112,88 @@ def test_discover_exception():
     finally:
         os.environ["HERE_APIKEY"] = api_key
     assert result.exit_code == 2
+
+
+def test_car_route():
+    runner = CliRunner()
+    result = runner.invoke(
+        maps,
+        [
+            "here",
+            "route",
+            "--transport_mode=car",
+            "--origin=52.51375,13.42462",
+            "--destination=52.51375,13.42462",
+            "--raw",
+        ],
+    )
+    assert result.exit_code == 0
+    assert "routes" in result.output
+
+
+def test_truck_route():
+    runner = CliRunner()
+    result = runner.invoke(
+        maps,
+        [
+            "here",
+            "route",
+            "--transport_mode=truck",
+            "--origin=52.51375,13.42462",
+            "--destination=52.51375,13.42462",
+            "--raw",
+        ],
+    )
+    assert result.exit_code == 0
+    assert "routes" in result.output
+
+
+def test_pedestrian_route():
+    runner = CliRunner()
+    result = runner.invoke(
+        maps,
+        [
+            "here",
+            "route",
+            "--transport_mode=pedestrian",
+            "--origin=52.51375,13.42462",
+            "--destination=52.51375,13.42462",
+            "--raw",
+        ],
+    )
+    assert result.exit_code == 0
+    assert "routes" in result.output
+
+
+def test_bicycle_route():
+    runner = CliRunner()
+    result = runner.invoke(
+        maps,
+        [
+            "here",
+            "route",
+            "--transport_mode=bicycle",
+            "--origin=52.51375,13.42462",
+            "--destination=52.51375,13.42462",
+            "--raw",
+        ],
+    )
+    assert result.exit_code == 0
+    assert "routes" in result.output
+
+
+def test_scooter_route():
+    runner = CliRunner()
+    result = runner.invoke(
+        maps,
+        [
+            "here",
+            "route",
+            "--transport_mode=scooter",
+            "--origin=52.51375,13.42462",
+            "--destination=52.51375,13.42462",
+            "--raw",
+        ],
+    )
+    assert result.exit_code == 0
+    assert "routes" in result.output
