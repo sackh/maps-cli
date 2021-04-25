@@ -6,6 +6,7 @@ import simplejson as json
 from geojsonio import display as geo_display
 from geopy.geocoders import Here
 from here_location_services import LS
+from here_location_services.config.routing_config import ROUTING_RETURN
 
 from maps.exceptions import ApiKeyNotFoundError
 from maps.utils import get_feature_from_lat_lon, yield_subcommands
@@ -154,3 +155,150 @@ def discover(
         geo_display(json.dumps(result.to_geojson(), indent=2))
     else:
         click.secho(json.dumps(result.items, indent=2), fg="green")
+
+
+@here.command(short_help="find route between two or more locations.")
+@click.option(
+    "--transport_mode",
+    type=click.Choice(["car", "truck", "pedestrian", "bicycle", "scooter"]),
+    required=True,
+)
+@click.option(
+    "--origin", help="A location defining origin of the trip. e.g lat,lng", required=True
+)
+@click.option(
+    "--destination", help="A location defining destination of the trip. e.g lat,lng", required=True
+)
+@click.option(
+    "--via",
+    help="A location defining a via waypoint."
+    " A via waypoint is a location between origin and destination.",
+)
+@click.option(
+    "--routing_mode",
+    help="Specifies which optimization is applied during route calculation.",
+    type=click.Choice(["fast", "short"]),
+    default="fast",
+    show_default=True,
+)
+@click.option(
+    "--alternatives",
+    help="Number of alternative routes to return aside from the optimal route.",
+    default=0,
+    type=int,
+)
+@click.option(
+    "--lang",
+    help="Specifies the preferred language of the response."
+    " The value should comply with the IETF BCP 47.",
+    default="en-US",
+)
+@click.option("--apikey", help="Your HERE API key", type=str)
+@click.option("--raw", is_flag=True)
+@click.option("--display", help="Display result in browser", is_flag=True)
+@click.pass_context
+def route(
+    ctx,
+    transport_mode,
+    origin,
+    destination,
+    via,
+    routing_mode,
+    alternatives,
+    lang,
+    apikey,
+    raw,
+    display,
+):
+    """
+    find route between two or more locations.
+    """
+    apikey = apikey or os.environ.get("HERE_APIKEY")
+    if apikey is None:
+        raise ApiKeyNotFoundError(
+            "Please pass HERE API KEY as --apikey or set it as environment "
+            "variable in HERE_APIKEY "
+        )
+    ctx.obj["apikey"] = apikey
+    ls = LS(api_key=apikey)
+    if transport_mode == "car":
+        result = ls.car_route(
+            origin=origin.split(","),
+            destination=destination.split(","),
+            via=via if via else None,
+            routing_mode=routing_mode,
+            alternatives=alternatives,
+            lang=lang,
+            return_results=[
+                ROUTING_RETURN.polyline,
+                ROUTING_RETURN.elevation,
+                ROUTING_RETURN.instructions,
+                ROUTING_RETURN.actions,
+            ],
+        )
+    elif transport_mode == "truck":
+        result = ls.truck_route(
+            origin=origin.split(","),
+            destination=destination.split(","),
+            via=via if via else None,
+            routing_mode=routing_mode,
+            alternatives=alternatives,
+            lang=lang,
+            return_results=[
+                ROUTING_RETURN.polyline,
+                ROUTING_RETURN.elevation,
+                ROUTING_RETURN.instructions,
+                ROUTING_RETURN.actions,
+            ],
+        )
+    elif transport_mode == "pedestrian":
+        result = ls.pedestrian_route(
+            origin=origin.split(","),
+            destination=destination.split(","),
+            via=via if via else None,
+            routing_mode=routing_mode,
+            alternatives=alternatives,
+            lang=lang,
+            return_results=[
+                ROUTING_RETURN.polyline,
+                ROUTING_RETURN.elevation,
+                ROUTING_RETURN.instructions,
+                ROUTING_RETURN.actions,
+            ],
+        )
+    elif transport_mode == "bicycle":
+        result = ls.bicycle_route(
+            origin=origin.split(","),
+            destination=destination.split(","),
+            via=via if via else None,
+            routing_mode=routing_mode,
+            alternatives=alternatives,
+            lang=lang,
+            return_results=[
+                ROUTING_RETURN.polyline,
+                ROUTING_RETURN.elevation,
+                ROUTING_RETURN.instructions,
+                ROUTING_RETURN.actions,
+            ],
+        )
+    elif transport_mode == "scooter":
+        result = ls.scooter_route(
+            origin=origin.split(","),
+            destination=destination.split(","),
+            via=via if via else None,
+            routing_mode=routing_mode,
+            alternatives=alternatives,
+            lang=lang,
+            return_results=[
+                ROUTING_RETURN.polyline,
+                ROUTING_RETURN.elevation,
+                ROUTING_RETURN.instructions,
+                ROUTING_RETURN.actions,
+            ],
+        )
+    if raw:
+        click.secho(json.dumps(result.response, indent=2), fg="green")
+    elif display:
+        geo_display(json.dumps(result.to_geojson(), indent=2))
+    else:
+        click.secho(json.dumps(result.routes, indent=2), fg="green")
