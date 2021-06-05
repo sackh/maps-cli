@@ -44,6 +44,7 @@ pytest-cov = "^2.10.1"
 pytest-flake8 = "^1.0.7"
 Sphinx = "^3.4.3"
 sphinx-rtd-theme = "^0.5.1"
+pytest-mock = "^3.6.1"
 
 [tool.poetry.scripts]
 maps = "maps.commands:maps"

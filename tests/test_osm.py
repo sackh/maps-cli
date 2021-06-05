@@ -75,3 +75,14 @@ def test_overpass_relation():
     )
     assert result.exit_code == 0
     assert '"landuse": "forest"' in result.output
+
+
+def test_mock_display(mocker):
+    mocker.patch("maps.osm.geo_display", return_value=True)
+    runner = CliRunner()
+    result = runner.invoke(
+        maps,
+        ["osm", "geocoding", "--forward", "1600 pennsylvania ave nw", "--display"],
+        catch_exceptions=False,
+    )
+    assert result.exit_code == 0

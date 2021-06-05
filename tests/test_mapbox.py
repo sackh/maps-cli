@@ -136,3 +136,29 @@ def test_matrix_exception():
     finally:
         os.environ["MAPBOX_APIKEY"] = api_key
     assert result.exit_code == 2
+
+
+def test_mock_display(mocker):
+    mocker.patch("maps.mapbox.geo_display", return_value=True)
+    runner = CliRunner()
+    result = runner.invoke(
+        maps,
+        [
+            "mapbox",
+            "isochrone",
+            "--profile=driving",
+            "--coordinates=-118.22258,33.99038",
+            "--contours_minutes=5",
+            "--contours_colors=6706ce",
+            "--polygons",
+            "--display",
+        ],
+        catch_exceptions=False,
+    )
+    assert result.exit_code == 0
+    runner = CliRunner()
+    result = runner.invoke(
+        maps,
+        ["mapbox", "geocoding", "--forward", "springfield", "--display"],
+        catch_exceptions=False,
+    )

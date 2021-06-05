@@ -191,8 +191,64 @@ def test_scooter_route():
             "--transport_mode=scooter",
             "--origin=52.51375,13.42462",
             "--destination=52.51375,13.42462",
-            "--raw",
         ],
     )
     assert result.exit_code == 0
-    assert "routes" in result.output
+    assert "id" in result.output
+
+
+def test_scooter_route_exception():
+    api_key = os.environ["HERE_APIKEY"]
+    try:
+        del os.environ["HERE_APIKEY"]
+        runner = CliRunner()
+        result = runner.invoke(
+            maps,
+            [
+                "here",
+                "route",
+                "--transport_mode=scooter",
+                "--origin=52.51375,13.42462",
+                "--destination=52.51375,13.42462",
+            ],
+        )
+    finally:
+        os.environ["HERE_APIKEY"] = api_key
+    assert result.exit_code == 2
+
+
+def test_mock_display(mocker):
+    mocker.patch("maps.here.geo_display", return_value=True)
+    runner = CliRunner()
+    result = runner.invoke(
+        maps,
+        ["here", "geocoding", "--forward", "springfield", "--display"],
+        catch_exceptions=False,
+    )
+    assert result.exit_code == 0
+    runner = CliRunner()
+    result = runner.invoke(
+        maps,
+        [
+            "here",
+            "discover",
+            "starbucks",
+            "--coordinates=72.8526,19.1663",
+            "--country_codes=IND",
+            "--display",
+        ],
+    )
+    assert result.exit_code == 0
+    runner = CliRunner()
+    result = runner.invoke(
+        maps,
+        [
+            "here",
+            "route",
+            "--transport_mode=scooter",
+            "--origin=52.51375,13.42462",
+            "--destination=52.51375,13.42462",
+            "--display",
+        ],
+    )
+    assert result.exit_code == 0
