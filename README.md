@@ -50,4 +50,5 @@ Currently, this library is supporting following providers.
 - [HERE](https://www.here.com/)
 - [MapBox](https://www.mapbox.com/)
 - [TomTom](https://www.tomtom.com/)
+- [ORS](https://openrouteservice.org/)
 
