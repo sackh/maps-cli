@@ -13,4 +13,4 @@ def test_show():
     """Test osm show command."""
     runner = CliRunner()
     result = runner.invoke(maps, ["show"], catch_exceptions=False)
-    assert result.output.split() == ["osm", "here", "mapbox", "tomtom"]
+    assert result.output.split() == ["osm", "here", "mapbox", "tomtom", "ors"]
