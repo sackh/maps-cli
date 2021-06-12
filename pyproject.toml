@@ -34,6 +34,7 @@ requests = "^2.25.1"
 geojsonio = "^0.0.3"
 geojson = "^2.5.0"
 here-location-services = "^0.2.0"
+openrouteservice = "^2.3.3"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

@@ -3,6 +3,7 @@ import click
 
 from maps.here import here
 from maps.mapbox import mapbox
+from maps.ors import ors
 from maps.osm import osm
 from maps.tomtom import tomtom
 from maps.utils import yield_subcommands
@@ -26,3 +27,4 @@ maps.add_command(osm)
 maps.add_command(here)
 maps.add_command(mapbox)
 maps.add_command(tomtom)
+maps.add_command(ors)
