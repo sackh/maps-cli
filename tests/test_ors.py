@@ -51,3 +51,18 @@ def test_mock_display(mocker):
         catch_exceptions=False,
     )
     assert result.exit_code == 0
+
+
+def test_ors_reverse_geocoding():
+    runner = CliRunner()
+    result = runner.invoke(
+        maps, ["ors", "geocoding", "--reverse", "73,19"], catch_exceptions=False
+    )
+    assert result.exit_code == 0
+    assert result.output == "Navi Mumbai, MH, India\n"
+    result2 = runner.invoke(
+        maps, ["ors", "geocoding", "--reverse", "73,19", "--raw"], catch_exceptions=False
+    )
+    assert result2.exit_code == 0
+    res = json.loads(result2.output)
+    assert res["properties"]["label"] == "Navi Mumbai, MH, India"

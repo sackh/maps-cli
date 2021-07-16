@@ -69,3 +69,12 @@ def geocoding(ctx, query, apikey, forward, raw, display):
                 coords = feature["geometry"]["coordinates"]
                 result = {"lat": coords[1], "lon": coords[0]}
                 click.secho(json.dumps(result, indent=2), fg="green")
+    else:
+        coordinate = query.split(",")
+        reverse = geolocator.pelias_reverse(point=coordinate, validate=False)
+        if raw:
+            for result in reverse["features"]:
+                click.secho(json.dumps(result, indent=2), fg="green")
+        else:
+            for result in reverse["features"]:
+                click.secho(result["properties"]["label"], fg="green")
