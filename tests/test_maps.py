@@ -6,7 +6,7 @@ from maps.commands import maps
 
 
 def test_version():
-    assert __version__ == "0.0.3"
+    assert __version__ == "0.0.4"
 
 
 def test_show():
