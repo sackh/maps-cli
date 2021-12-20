@@ -74,10 +74,9 @@ def test_discover():
         ],
     )
     assert result.exit_code == 0
-    assert (
-        "Starbucks, New Link Road, Andheri West, Mumbai 400053, India" in result.output
-    )
-
+    results = json.loads(result.output)
+    assert isinstance(results, list)
+    
     result2 = runner.invoke(
         maps,
         [
