@@ -38,11 +38,6 @@ jobs:
       shell: bash
       run: python -m poetry install
 
-    - name: Lint check using pre-commit
-      shell: bash -l {0}
-      run: |
-        poetry  run pre-commit run --all-files
-
     - name: Test with pytest
       env:
         HERE_APIKEY: ${{ secrets.HERE_APIKEY }}
