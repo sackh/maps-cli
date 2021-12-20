@@ -77,7 +77,9 @@ def geocoding(ctx, query, apikey, forward, raw, display):
 
 
 @mapbox.command(short_help="isochrone to get reachable areas on map.")
-@click.option("--profile", type=click.Choice(["driving", "walking", "cycling"]), required=True)
+@click.option(
+    "--profile", type=click.Choice(["driving", "walking", "cycling"]), required=True
+)
 @click.option(
     "--coordinates",
     required=True,
@@ -106,7 +108,14 @@ def geocoding(ctx, query, apikey, forward, raw, display):
 @click.option("--display", help="Display result in browser", is_flag=True)
 @click.pass_context
 def isochrone(
-    ctx, profile, coordinates, contours_minutes, contours_colors, polygons, apikey, display
+    ctx,
+    profile,
+    coordinates,
+    contours_minutes,
+    contours_colors,
+    polygons,
+    apikey,
+    display,
 ):
     """
     An isochrone, from the Greek root words iso (equal) and chrone (time), is a line that connects
@@ -151,7 +160,9 @@ def isochrone(
         profile=profile,
         coordinates=coordinates.split(","),
         contours_minutes=contours_minutes.split(","),
-        contours_colors=contours_colors.split(",") if contours_colors else contours_colors,
+        contours_colors=contours_colors.split(",")
+        if contours_colors
+        else contours_colors,
         polygons=polygons,
     )
     if display:
@@ -164,7 +175,9 @@ def isochrone(
         click.secho(json.dumps(resp.json(), indent=2), fg="green")
 
 
-@mapbox.command(short_help="The Mapbox Matrix API returns travel times between many points.")
+@mapbox.command(
+    short_help="The Mapbox Matrix API returns travel times between many points."
+)
 @click.option(
     "--profile",
     type=click.Choice(["driving", "walking", "cycling", "driving-traffic"]),

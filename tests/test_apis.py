@@ -7,7 +7,8 @@ from maps.exceptions import ApiError
 
 def test_apis():
     client = Api(
-        base_url="https://api.mapbox.com/isochrone/v1/mapbox/driving/0,0", credentials="dummy"
+        base_url="https://api.mapbox.com/isochrone/v1/mapbox/driving/0,0",
+        credentials="dummy",
     )
     try:
         client.get()

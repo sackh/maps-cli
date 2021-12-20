@@ -85,10 +85,14 @@ def geocoding(ctx, query, apikey, forward, raw, display):
     type=str,
 )
 @click.option(
-    "--radius", help="radius in meters along with coordinates for searching places.", type=str
+    "--radius",
+    help="radius in meters along with coordinates for searching places.",
+    type=str,
 )
 @click.option(
-    "--country_codes", help="comma separated ISO 3166-1 alpha-3 country codes.", type=str
+    "--country_codes",
+    help="comma separated ISO 3166-1 alpha-3 country codes.",
+    type=str,
 )
 @click.option(
     "--bounding_box",
@@ -107,7 +111,17 @@ def geocoding(ctx, query, apikey, forward, raw, display):
 @click.option("--display", help="Display result in browser", is_flag=True)
 @click.pass_context
 def discover(
-    ctx, query, coordinates, radius, country_codes, bounding_box, limit, lang, apikey, raw, display
+    ctx,
+    query,
+    coordinates,
+    radius,
+    country_codes,
+    bounding_box,
+    limit,
+    lang,
+    apikey,
+    raw,
+    display,
 ):
     """
     Search places using free-form text query.
@@ -164,10 +178,14 @@ def discover(
     required=True,
 )
 @click.option(
-    "--origin", help="A location defining origin of the trip. e.g lat,lng", required=True
+    "--origin",
+    help="A location defining origin of the trip. e.g lat,lng",
+    required=True,
 )
 @click.option(
-    "--destination", help="A location defining destination of the trip. e.g lat,lng", required=True
+    "--destination",
+    help="A location defining destination of the trip. e.g lat,lng",
+    required=True,
 )
 @click.option(
     "--via",

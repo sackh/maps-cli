@@ -21,7 +21,9 @@ def test_geocoding_fwd():
     )
     assert result.exit_code == 0
     result = runner.invoke(
-        maps, ["ors", "geocoding", "--forward", "springfield", "--raw"], catch_exceptions=False
+        maps,
+        ["ors", "geocoding", "--forward", "springfield", "--raw"],
+        catch_exceptions=False,
     )
     res = json.loads(result.output)
     with open("ors_data", "w") as fh:
@@ -35,7 +37,9 @@ def test_geocoding_exception():
         del os.environ["ORS_APIKEY"]
         runner = CliRunner()
         result = runner.invoke(
-            maps, ["ors", "geocoding", "--forward", "springfield"], catch_exceptions=False
+            maps,
+            ["ors", "geocoding", "--forward", "springfield"],
+            catch_exceptions=False,
         )
     finally:
         os.environ["ORS_APIKEY"] = api_key
@@ -61,7 +65,9 @@ def test_ors_reverse_geocoding():
     assert result.exit_code == 0
     assert result.output == "Navi Mumbai, MH, India\n"
     result2 = runner.invoke(
-        maps, ["ors", "geocoding", "--reverse", "73,19", "--raw"], catch_exceptions=False
+        maps,
+        ["ors", "geocoding", "--reverse", "73,19", "--raw"],
+        catch_exceptions=False,
     )
     assert result2.exit_code == 0
     res = json.loads(result2.output)
