@@ -90,4 +90,6 @@ def overpass(query):
         click.secho("Relations:", fg="green")
         for relation in result.relations:
             relation.tags["id"] = relation.id
-            click.secho(json.dumps(relation.tags, indent=2, ensure_ascii=False), fg="green")
+            click.secho(
+                json.dumps(relation.tags, indent=2, ensure_ascii=False), fg="green"
+            )

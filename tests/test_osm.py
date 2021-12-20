@@ -17,7 +17,9 @@ def test_show():
 def test_geocoding_fwd():
     runner = CliRunner()
     result = runner.invoke(
-        maps, ["osm", "geocoding", "--forward", "1600 pennsylvania ave nw"], catch_exceptions=False
+        maps,
+        ["osm", "geocoding", "--forward", "1600 pennsylvania ave nw"],
+        catch_exceptions=False,
     )
     assert result.exit_code == 0
     latlon = json.loads(result.output)
@@ -38,7 +40,9 @@ def test_geocoding_fwd():
 def test_geocoding_reverse():
     runner = CliRunner()
     result = runner.invoke(
-        maps, ["osm", "geocoding", "--reverse", "19.16153,72.85618"], catch_exceptions=False
+        maps,
+        ["osm", "geocoding", "--reverse", "19.16153,72.85618"],
+        catch_exceptions=False,
     )
     assert result.exit_code == 0
     assert "I B Patel Road" in result.output
@@ -53,7 +57,9 @@ def test_geocoding_reverse():
 def test_overpass_node():
     runner = CliRunner()
     result = runner.invoke(
-        maps, ["osm", "overpass", "node(50.745,7.17,50.75,7.18);out;"], catch_exceptions=False
+        maps,
+        ["osm", "overpass", "node(50.745,7.17,50.75,7.18);out;"],
+        catch_exceptions=False,
     )
     assert result.exit_code == 0
     assert '"id": 4597400934' in result.output
@@ -62,7 +68,9 @@ def test_overpass_node():
 def test_overpass_way():
     runner = CliRunner()
     result = runner.invoke(
-        maps, ["osm", "overpass", "way(50.745,7.17,50.75,7.18);out;"], catch_exceptions=False
+        maps,
+        ["osm", "overpass", "way(50.745,7.17,50.75,7.18);out;"],
+        catch_exceptions=False,
     )
     assert result.exit_code == 0
     assert '"addr:city": "Bonn"' in result.output
@@ -71,7 +79,9 @@ def test_overpass_way():
 def test_overpass_relation():
     runner = CliRunner()
     result = runner.invoke(
-        maps, ["osm", "overpass", "relation(50.745,7.17,50.75,7.18);out;"], catch_exceptions=False
+        maps,
+        ["osm", "overpass", "relation(50.745,7.17,50.75,7.18);out;"],
+        catch_exceptions=False,
     )
     assert result.exit_code == 0
     assert '"landuse": "forest"' in result.output
