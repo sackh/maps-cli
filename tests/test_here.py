@@ -76,7 +76,7 @@ def test_discover():
     assert result.exit_code == 0
     results = json.loads(result.output)
     assert isinstance(results, list)
-    
+
     result2 = runner.invoke(
         maps,
         [

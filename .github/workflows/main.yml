@@ -41,7 +41,7 @@ jobs:
     - name: Lint check
       shell: bash -l {0}
       run: |
-        pre-commit run --all-files
+        poetry  run pre-commit run --all-files
 
     - name: Test with pytest
       env:

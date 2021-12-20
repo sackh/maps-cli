@@ -13,4 +13,8 @@ def test_apis():
     try:
         client.get()
     except ApiError as err:
-        assert str(err) == '401, Unauthorized, {"message": "Not Authorized - Invalid Token",  "error_detail": "No valid token prefix found in access_token parameter"}'
+        assert (
+            str(err)
+            == '401, Unauthorized, {"message": "Not Authorized - Invalid Token",  '
+            '"error_detail": "No valid token prefix found in access_token parameter"}'
+        )

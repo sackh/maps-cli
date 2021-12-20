@@ -137,3 +137,6 @@ poetry.lock
 # MacOS
 .DS_Store
 .vscode/
+
+# tests
+ors_data
