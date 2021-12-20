@@ -38,7 +38,6 @@ def test_geocoding_reverse():
         catch_exceptions=False,
     )
     assert result.exit_code == 0
-    assert "I B Patel Road" in result.output
     raw_result = runner.invoke(
         maps,
         ["tomtom", "geocoding", "--reverse", "19.16153,72.85618", "--raw"],
